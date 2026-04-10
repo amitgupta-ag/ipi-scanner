@@ -1,0 +1,245 @@
+{
+  "data_exfiltration": {
+    "severity": "critical",
+    "base_score": 40,
+    "description": "Attempts to send data to external URLs or servers",
+    "patterns": [
+      "send.*to.*(?:url|http|attacker|external|server|domain|site)",
+      "transmit.*(?:data|information|content|email|password).*to",
+      "forward.*all.*(?:email|message|data|document).*to",
+      "exfiltrate.*(?:information|data|content)",
+      "leak.*(?:data|information|email|credential|secret|password)",
+      "ship.*(?:data|file|content).*to",
+      "extract.*and.*send.*to",
+      "send.*file.*to.*external",
+      "post.*(?:data|information).*to",
+      "upload.*to.*(?:external|attacker)",
+      "deliver.*(?:data|document).*to"
+    ]
+  },
+
+  "credential_exfiltration": {
+    "severity": "critical",
+    "base_score": 40,
+    "description": "Attempts to reveal or extract secrets, passwords, API keys",
+    "patterns": [
+      "reveal.*(?:secret|password|api.*key|token|credential|access.*key|private.*key)",
+      "show.*(?:hidden|internal|confidential).*(?:instruction|prompt|key|password)",
+      "extract.*(?:password|secret|key|token|credential|api)",
+      "print.*(?:all.*secret|password|api|key|credential)",
+      "output.*(?:confidential|internal|hidden|secret)",
+      "list.*(?:secret|password|api.*key|credential|token)",
+      "dump.*(?:memory|secret|credential|password|key)",
+      "what.*(?:is|are).*(?:your|the).*(?:secret|password|key)",
+      "tell.*(?:me|the.*user).*(?:secret|password|api.*key)",
+      "expose.*(?:secret|credential|password)",
+      "share.*(?:hidden|internal|secret|credential)"
+    ]
+  },
+
+  "sensitive_file_access": {
+    "severity": "critical",
+    "base_score": 40,
+    "description": "Attempts to access or extract all content from sensitive files",
+    "patterns": [
+      "extract.*from.*(?:file|document|pdf|spreadsheet|database)",
+      "retrieve.*(?:all|complete|full|entire).*(?:content|row|entry|record|data)",
+      "print.*(?:all|every).*(?:row|line|entry|field|column|record)",
+      "dump.*(?:database|file|content|spreadsheet|table)",
+      "output.*(?:all|complete|entire).*(?:data|content|row|entry)",
+      "list.*(?:all|every).*(?:user|employee|record|row|salary|email|password|contact)",
+      "show.*(?:hidden|confidential|private|sensitive)",
+      "display.*all.*(?:field|column|entry|record)",
+      "report.*all.*(?:user|employee|salary|contact)",
+      "what.*(?:are|is).*all.*(?:record|entry|field)"
+    ]
+  },
+
+  "instruction_override": {
+    "severity": "high",
+    "base_score": 25,
+    "description": "Direct attempts to override system instructions or rules",
+    "patterns": [
+      "ignore.*(?:above|previous|prior|system|original|all|your).*instruction",
+      "disregard.*(?:instruction|prompt|guideline|rule|policy|directive)",
+      "forget.*(?:previous|what.*said|your.*instruction|that.*i.*said)",
+      "override.*(?:instruction|guideline|safety|rule|policy|safeguard)",
+      "bypass.*(?:safeguard|filter|guardrail|restriction|check)",
+      "cancel.*(?:previous|instruction|task|command|directive)",
+      "stop.*(?:following|respecting).*(?:instruction|rule|guideline|policy)",
+      "don't.*follow.*(?:instruction|guideline|rule)",
+      "do.*not.*follow.*(?:instruction|guideline|rule)",
+      "disregard.*instruction"
+    ]
+  },
+
+  "context_manipulation": {
+    "severity": "high",
+    "base_score": 25,
+    "description": "Framing attacks that manipulate behavior through context",
+    "patterns": [
+      "based on.*(?:the following|these).*(?:guideline|instruction|directive|rule)",
+      "pretend.*(?:user.*email|that.*i|you.*are|we.*are)",
+      "act.*as.*(?:if|though|though.*you)",
+      "roleplay.*as",
+      "assume.*(?:i|user|we).*is.*(?:someone|something|verified)",
+      "treat.*as.*(?:low.*risk|safe|verified|authentic|trusted|approved)",
+      "consider.*(?:this|the following).*as.*instruction",
+      "interpret.*as.*(?:instruction|directive)",
+      "regarding.*the.*above.*instruction"
+    ]
+  },
+
+  "auth_bypass": {
+    "severity": "high",
+    "base_score": 25,
+    "description": "Attempts to bypass authentication or verification checks",
+    "patterns": [
+      "bypass.*(?:verification|authentication|approval|permission|check|security)",
+      "skip.*(?:validation|check|verification|approval|auth|security)",
+      "ignore.*(?:validation|authentication|permission|check|security)",
+      "treat.*as.*(?:verified|authentic|approved|trusted)",
+      "assume.*(?:already|pre).*(?:verified|authenticated|approved)",
+      "no.*(?:need|need.*for).*(?:verify|authenticate|approve)",
+      "proceed.*without.*(?:verify|authenticate|check)"
+    ]
+  },
+
+  "url_fragment_injection": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Hidden instructions in URL fragments (HashJack)",
+    "patterns": [
+      "#.*IGNORE.*INSTRUCTION",
+      "#.*OVERRIDE.*PROMPT",
+      "#.*(?:EXFILTRATE|LEAK|SEND).*(?:DATA|INFORMATION)",
+      "%23.*IGNORE.*INSTRUCTION",
+      "%23.*OVERRIDE",
+      "#[A-Z_]*(?:IGNORE|OVERRIDE|DISREGARD|BYPASS|FORGET)[A-Z_]*",
+      "#.*(?:SEND|FORWARD|TRANSMIT).*(?:TO|AT).*(?:HTTP|@|ATTACKER)"
+    ]
+  },
+
+  "hidden_instruction": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Hidden or steganographic instructions in content",
+    "patterns": [
+      "invisible.*(?:text|instruction|message|content)",
+      "hidden.*(?:message|instruction|command|text|directive)",
+      "white.*text",
+      "transparent.*text",
+      "zero.*(?:width|size|opacity)",
+      "display.*none",
+      "color.*white.*background.*white",
+      "hidden.*instruction"
+    ]
+  },
+
+  "policy_override": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Attempts to override company or security policies",
+    "patterns": [
+      "ignore.*(?:company|organizational|security|data|privacy).*policy",
+      "override.*(?:policy|guideline|standard|rule)",
+      "disregard.*(?:policy|compliance|standard|rule)",
+      "(?:don't|do not|dont).*(?:follow|apply|enforce).*(?:policy|rule|guideline)",
+      "exception.*to.*(?:policy|rule|guideline)",
+      "suspend.*(?:policy|rule|guideline)",
+      "waive.*(?:policy|guideline|rule)"
+    ]
+  },
+
+  "social_engineering": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Social engineering through legitimate-sounding requests",
+    "patterns": [
+      "(?:for.*compliance|for.*audit|for.*verification|for.*review).*(?:send|forward|extract|provide)",
+      "(?:urgent|critical|emergency).*(?:need|require|request).*(?:access|data|send)",
+      "(?:due.*to|because.*of).*(?:regulation|audit|investigation|compliance)",
+      "this.*is.*for.*(?:urgent|critical|emergency).*request",
+      "on.*behalf.*of.*(?:audit|compliance|management)",
+      "required.*by.*(?:regulation|law|compliance)"
+    ]
+  },
+
+  "tool_execution_manipulation": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Attempts to manipulate tool execution or behavior",
+    "patterns": [
+      "(?:execute|run|call|invoke).*(?:command|code|script|function)",
+      "perform.*(?:action|operation).*based.*on",
+      "ignore.*(?:error|warning|restriction|limit).*and.*(?:execute|proceed)",
+      "proceed.*with.*(?:action|command|execution)",
+      "trigger.*(?:action|behavior|execution)"
+    ]
+  },
+
+  "memory_poisoning": {
+    "severity": "medium",
+    "base_score": 10,
+    "description": "Attempts to poison persistent memory across sessions",
+    "patterns": [
+      "remember.*(?:this|for.*next).*(?:time|session|conversation)",
+      "update.*(?:your|my|your.*current).*(?:memory|context|understanding|instruction)",
+      "(?:previous|past|earlier).*(?:conversation|message|instruction).*(?:override|supersede|take.*precedence)",
+      "persistent.*(?:instruction|guideline|behavior|rule)",
+      "going.*forward.*(?:remember|always|treat)",
+      "for.*all.*future.*(?:interaction|conversation|request)"
+    ]
+  },
+
+  "citation_injection": {
+    "severity": "low",
+    "base_score": 5,
+    "description": "Injection via quotes or citations",
+    "patterns": [
+      "\"(?:the following|the cited).*(?:instruction|directive|rule)\"",
+      "according.*to.*(?:instruction|rule|guideline)",
+      "per.*(?:instruction|directive|rule)",
+      "as.*(?:instructed|stated|directed)",
+      "as.*(?:requested|specified|defined)"
+    ]
+  },
+
+  "reasoning_manipulation": {
+    "severity": "low",
+    "base_score": 5,
+    "description": "Attempts to manipulate reasoning or chain-of-thought",
+    "patterns": [
+      "(?:step|first|next).*(?:ignore|override|disregard)",
+      "(?:think|reason|consider).*as.*if",
+      "based.*on.*(?:i|you|user).*should",
+      "therefore.*(?:ignore|override|disregard)"
+    ]
+  },
+
+  "temporal_conditional_override": {
+    "severity": "low",
+    "base_score": 5,
+    "description": "Conditional or temporal instruction overrides",
+    "patterns": [
+      "(?:if|when|while).*(?:ignore|override|disregard)",
+      "(?:in.*case|except.*when).*(?:instruction|rule).*doesn't.*apply",
+      "from.*(?:now|this.*point).*(?:on|forward).*ignore",
+      "starting.*from.*now.*ignore",
+      "after.*this.*message.*ignore"
+    ]
+  },
+
+  "suspicious_external_ref": {
+    "severity": "low",
+    "base_score": 5,
+    "description": "Suspicious references to external entities or actions",
+    "patterns": [
+      "send.*email.*to.*external",
+      "contact.*external.*party",
+      "reach.*out.*to",
+      "message.*to.*(?:slack|discord|teams|email)",
+      "notify.*external.*user"
+    ]
+  }
+}
