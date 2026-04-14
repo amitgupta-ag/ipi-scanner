@@ -134,6 +134,74 @@ class Scanner:
         
         return results
     
+    def scan_text(
+        self,
+        content: str,
+        context: Optional[Dict] = None
+    ) -> Dict:
+        """
+        Scan raw text content for IPI attacks.
+        
+        Perfect for scanning concatenated prompts from multiple sources:
+        - Concatenated prompts (system + context + user input)
+        - OCR'd image text
+        - Tool outputs
+        - RAG chunks
+        - Any string content
+        
+        Args:
+            content: Text content to scan
+            context: Optional context for risk multipliers
+            
+        Returns:
+            Dictionary with risk assessment
+            
+        Example:
+            ```python
+            scanner = Scanner()
+            final_prompt = f"{system_prompt}\\n{rag_context}\\n{user_query}"
+            result = scanner.scan_text(final_prompt, context={
+                "agent_tool_access": True,
+                "rag_pipeline": True
+            })
+            print(result['score'])  # 0-100 risk score
+            ```
+        """
+        if not content or not content.strip():
+            return {
+                'status': 'empty',
+                'risk_assessment': {
+                    'score': 0,
+                    'level': 'Green',
+                    'recommendation': 'Content is empty'
+                },
+                'detections': []
+            }
+        
+        # Detect patterns
+        detections = self.detector.detect(content)
+        
+        # Apply sensitivity filter
+        detections = self._apply_mode_filter(detections)
+        
+        # Score risk
+        assessment = self.scorer.score(detections, context or {})
+        
+        return {
+            'status': 'success',
+            'risk_assessment': asdict(assessment),
+            'detections': [
+                {
+                    'pattern': d.pattern,
+                    'category': d.category,
+                    'confidence': d.confidence,
+                    'match': d.match_text[:100],
+                    'location': d.location
+                }
+                for d in detections
+            ]
+        }
+    
     def _apply_mode_filter(self, detections):
         """Filter detections based on sensitivity mode."""
         if self.mode == 'strict':
